@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <!-- From http://github.com/steckel/mocha-coffeescript-boilerplate !-->
+  <meta charset="utf-8">
+  <title>appengine-rest-server-backbone Tests</title>
+  <link rel="stylesheet" href="vendor/mocha.css" />
+    <script src="/js/json2.js"></script>
+    <script src="/js/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/js/underscore.js"></script>
+    <script src="/js/backbone.js"></script>
+
+    <script src="/test/vender/mocha.js" type="text/javascript"></script>
+    <script src="/test/vender/chai.js" type="text/javascript"></script>
+    <script>
+    chai.should();
+    mocha.setup('bdd');
+    $(function () {
+      mocha
+        .run()
+        .globals(['AppEngineRestModel', 'AppEngineRestCollection', '$', '_']) // acceptable globals
+    });
+    </script>
+
+
+    <!-- include source files here... -->
+
+    <script src="/js/appengine-rest-server-backbone.js" type="text/javascript"></script>
+    <script src="/js/todos-models-collections.js" type="text/javascript"></script>
+
+    <!-- include test files here... -->
+    <script src="test.js"></script>
+
+</head>
+<body>
+  <div id="mocha"></div>
+</body>
+</html>
