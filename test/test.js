@@ -15,16 +15,14 @@ describe('AppEngineModel', function() {
                 'order':   1
             });
         todo.save(null, {
-            success: function(model, resp) { done(); },
+            success: function(model, resp) { 
+                         model.get('content').should.equal('buy milk');
+                         done(); 
+                     },
             error:   function(model, resp) { 
-                // We expect an error in backbone since we have not yet
-                // writen the parse code.  But the server should give
-                // return non-error status.
-                resp.status.should.equal(200);
-                done(); 
+                done(new Error('failed to save todo')); 
             }
         });
-
     });
 });
     
