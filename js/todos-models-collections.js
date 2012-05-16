@@ -5,7 +5,12 @@
 (function (){
     var root = this;
     
-    root.Todo = AppEngineRestModel.extend({});
+    root.Todo = AppEngineRestModel.extend({
+        modelName: 'Todos',
+        url: '/rest/Todos'
+    
+    
+    });
     
     
     
