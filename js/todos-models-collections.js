@@ -7,13 +7,19 @@
     
     root.Todo = AppEngineRestModel.extend({
         modelName: 'Todos',
-        url: '/rest/Todos'
-    
-    
+        attrTypes: {
+            'done':  'boolean',
+            'order': 'number'
+        }
     });
     
     
     
-    root.TodoList = AppEngineRestCollection.extend({});
+    root.TodoList = AppEngineRestCollection.extend({
+        model: root.Todo,
+        modelName: 'Todos',
+        url: '/rest/Todos'
+        
+    });
     
 })();
