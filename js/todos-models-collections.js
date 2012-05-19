@@ -10,15 +10,15 @@
         attrTypes: {
             'done':  'boolean',
             'order': 'number'
-        }
+        },
+        urlRoot: '/rest/Todos'
     });
     
     
     
     root.TodoList = AppEngineRestCollection.extend({
         model: root.Todo,
-        modelName: 'Todos',
-        url: '/rest/Todos'
+        modelName: 'Todos'
         
     });
     

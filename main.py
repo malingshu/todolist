@@ -37,6 +37,18 @@ class MainHandler(webapp.RequestHandler):
 	path = os.path.join(os.path.dirname(__file__), 'index.html')
 	self.response.out.write(template.render(path, None))
 
+class MyAuthorizer(rest.Authorizer):
+    # only get Todos that are associated with you
+    # Todo: add some error checking.
+    def check_query(self, dispatcher, query_expr, query_params):
+        list_key = db.Key(dispatcher.request.cookies['todos'])
+        if(not query_expr):
+            query_expr = "WHERE todolist = KEY('%s')" % (str(list_key))
+        else:
+            query_expr += " AND todolist = KEY('%s')" % (str(list_key))
+        # logging.info(query_expr)
+        return query_expr
+
 	
 application = webapp.WSGIApplication([
 				     ('/', MainHandler),
@@ -56,7 +68,7 @@ rest.Dispatcher.add_models({
         })
 
 # the authorizer will make it so you only see your own Todos.
-# rest.Dispatcher.authorizer = MyAuthorizer()
+rest.Dispatcher.authorizer = MyAuthorizer()
 
 
 def main():

@@ -157,9 +157,15 @@
     Backbone.sync = function (method, model, options) {
         var url, new_options = options || {};
         if (model.isGAERestModel) {
-            if (method === 'create' || method === 'update'){
+            if (method === 'create') {
                 url = getValue(model, 'url') || urlError();;
                 new_options.url = url + '?type=full';
+            } else if (method === 'update') {
+                url = getValue(model, 'url') || urlError();;
+                new_options.url = url + "/" + model.id + '?type=full';
+            } else if (method === 'delete') {
+                url = getValue(model, 'url') || urlError();;
+                new_options.url = url + '/' + model.id;
             }
         }
         return old_sync(method, model, new_options);
