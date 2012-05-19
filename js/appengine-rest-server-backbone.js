@@ -87,6 +87,66 @@
     
     
     root.AppEngineRestCollection = Backbone.Collection.extend({
+        // We need to remember to set modelName in 
+        // each instnce of the model
+        // modelName: the name of the Model on appEngine-rest-server
+
+
+        
+        // Unwrap the list from the server
+        // then re-wrap it for our model.toJSON()
+        //
+        // the server gives us an object like this:
+        // {
+        //   
+        //    list: {
+        //      Todos: [
+        //        {content: 'Buy milk', done: 'false'},
+        //        {content: 'Buy eggs', done: 'true'}
+        //      ]
+        //    }
+        // }
+        // We need to parse it to look like:
+        //
+        // [
+        //   {Todos: {content: 'Buy milk', done: 'false'},
+        //   {Todos: {content: 'Buy eggs', done: 'true'},
+        // ]
+        // 
+
+        //
+        // -------------
+        parse:  function (resp) {
+            var models, i, len, model_name, wrapped_model, model_list;
+            model_name = this.modelName;                    
+            models = [];
+            
+            // Here we unwrap the object (ie: modelList = resp.list["Todos"])
+            if(_.isArray(resp.list[model_name])) {
+                model_list = resp.list[model_name];
+            }
+            // When there is only one item returned, 
+            // appengine-rest-server returns a single object
+            // rather than an array with one element.  
+            // So we need to check for this and we will 
+            // put it into an array for our loop.
+            else if (_.isObject(resp.list[model_name])) { 
+                model_list = [];
+                model_list.push(resp.list[model_name]);
+            }
+            else{ // otherwise, we have nothing.
+                model_list = [];
+            }
+            len = model_list.length || 0;
+            for (i = 0; i < len; i++) {
+                // Here we re-wrap the model for model.parse() 
+                // ie: wrappedModel = {Todos: {...}}
+                wrapped_model = {};
+                wrapped_model[model_name] = model_list[i]; 
+                models.push(wrapped_model);
+            }
+            return models;
+        }
     
     });
 
