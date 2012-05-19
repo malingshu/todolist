@@ -26,7 +26,6 @@ Whereas Backbone deals expects models like this:
            
 When GETting a collection, appengine-rest-server gives back something like:
         {
-           
             list: {
               Todos: [
                 {content: 'Buy milk', done: 'false', order: '1'},
@@ -53,7 +52,7 @@ For example {"done": false} is returned as {"done": "false"}
 So we need to explicitly convert them.  
 This is done in the helper function: convertStringToTypes 
 which is called in AppengineRestModel.parse()
-
+The attributes to convert have to be specified in AppengineRestModel.attrTypes
 
 
 
