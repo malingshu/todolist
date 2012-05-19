@@ -1,9 +1,60 @@
-
-
-Documentation:
-
-https://github.com/malingshu/todolist/wiki
-
 Working demo:
 
 http://todos-rest-server.appspot.com/
+
+
+The main difference between appengine-rest-server and Backbone's
+expectations for a rest server are that the objects are wrapped.
+So we need to change Model.parse() and Model.toJSON() as well as
+Collection.parse()
+
+For example, appengine-rest-server expects an object like this:
+         {Todos:
+           {
+             content: 'Buy milk.',
+             done:    'false',
+             order:   1
+           }
+         }
+Whereas Backbone deals expects models like this:
+           {
+             content: 'Buy milk.',
+             done:    'false',
+             order:   1
+           }
+
+           
+When GETting a collection, appengine-rest-server gives back something like:
+        {
+           
+            list: {
+              Todos: [
+                {content: 'Buy milk', done: 'false', order: '1'},
+                {content: 'Buy eggs', done: 'true', order: '2'}
+              ]
+            }
+         }
+        We need to parse it to look like:
+        
+         [
+           {Todos: {content: 'Buy milk', done: 'false', order: '1'},
+           {Todos: {content: 'Buy eggs', done: 'true', order: '2'},
+         ]
+And there is one other case.  When the collection has only one element, a GET
+returns without a list like this:
+         {Todos: {content: 'Buy milk', done: 'false', order: '1'}
+         So we need to wrap that single object in a list:
+         [{Todos: {content: 'Buy milk', done: 'false', order: '1'}]
+
+
+
+Another issue is that everything comes back as a string from the server.
+For example {"done": false} is returned as {"done": "false"}
+So we need to explicitly convert them.  
+This is done in the helper function: convertStringToTypes 
+which is called in AppengineRestModel.parse()
+
+
+
+
+
