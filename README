@@ -2,6 +2,7 @@ Working demo:
 
 http://todos-rest-server.appspot.com/
 
+See: https://code.google.com/p/appengine-rest-server/
 
 The main difference between appengine-rest-server and Backbone's
 expectations for a rest server are that the objects are wrapped.
